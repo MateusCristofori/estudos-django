@@ -11,19 +11,21 @@ def cadastro(request):
         email = request.POST['email']
         senha = request.POST['password']
         confirmacao_senha = request.POST['password2']
-        print(nome, email, senha, confirmacao_senha)
-        if not nome.strip():
-            print("O nome não pode ficar em branco")
+        if campo_vazio(nome):
+            messages.error(request, "O nome não pode ficar em branco")
             return redirect('cadastro')
-        if not email.strip():
-            print("O email não pode ficar em branco")
+        if campo_vazio(email):
+            messages.error(request, "O email não pode ficar em branco")
             return redirect('cadastro')
-        if senha != confirmacao_senha:
+        if verificacao_senha(senha, confirmacao_senha):
             messages.error(request, 'As senhas não são iguais.')
             print('As senhas precisam ser iguais!')
             return redirect('cadastro')
+        if User.objects.filter(username=nome).exits():
+            messages.error(request, 'Nome de usuário já cadastrado. Tente outro nome.')
+            return redirect('cadastro')
         if User.objects.filter(email=email).exists():
-            print('Usuário já cadastrado.')
+            messages.error(request, 'Usuário já cadastrado.')
             return redirect('cadastro')
         user = User.objects.create_user(
             username=nome, email=email, password=senha)
@@ -38,10 +40,9 @@ def login(request):
     if request.method == 'POST':
         email = request.POST['email']
         senha = request.POST['senha']
-        if email == "" or senha == "":
-            print('Os campos email e senha não podem ficar em branco')
+        if campo_vazio(email) or campo_vazio(senha):
+            messages.error(request, 'Os campos email e senha não podem ficar em branco')
             return redirect('login')
-        print(email, senha)
         if User.objects.filter(email=email).exists():
             nome = User.objects.filter(email=email).values_list(
                 'username', flat=True).get()
@@ -89,3 +90,11 @@ def cria_receita(request):
         return redirect('dashboard')
     else:
         return render(request, 'usuarios/cria_receita.html')
+
+
+def campo_vazio(campo):
+    return not campo.strip()
+
+
+def verificacao_senha(senha1, senha2):
+    return senha1 != senha2
