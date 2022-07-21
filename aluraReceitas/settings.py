@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+from django.contrib.messages import constants as messages
+from logging import CRITICAL
 import os
 from pathlib import Path
 
@@ -35,7 +37,7 @@ INSTALLED_APPS = [
     'usuarios.apps.UsuariosConfig',
     'pessoas.apps.PessoasConfig',
     'receitas.apps.ReceitasConfig',
-    'django.contrib.admin', 
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -133,6 +135,13 @@ MEDIA_ROOT = [
     BASE_DIR / 'media'
 ]
 MEDIA_URL = '/media/'
+
+# Mensagens
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+    messages.SUCCESS: 'success',
+}
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
