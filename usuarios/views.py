@@ -91,7 +91,7 @@ def cria_receita(request):
         receita.save()
         return redirect('dashboard')
     else:
-        return render(request, 'usuarios/cria_receita.html')
+        return render(request, 'receitas/cria_receita.html')
 
 
 def deleta_receita(request, receita_id):
@@ -106,7 +106,7 @@ def edita_receita(request, receita_id):
         'receita': receita
     }
 
-    return render(request, 'usuarios/edita_receita.html')
+    return render(request, 'receitas/edita_receita.html')
 
 
 def campo_vazio(campo):
