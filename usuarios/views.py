@@ -22,7 +22,8 @@ def cadastro(request):
             print('As senhas precisam ser iguais!')
             return redirect('cadastro')
         if User.objects.filter(username=nome).exits():
-            messages.error(request, 'Nome de usuário já cadastrado. Tente outro nome.')
+            messages.error(
+                request, 'Nome de usuário já cadastrado. Tente outro nome.')
             return redirect('cadastro')
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Usuário já cadastrado.')
@@ -41,7 +42,8 @@ def login(request):
         email = request.POST['email']
         senha = request.POST['senha']
         if campo_vazio(email) or campo_vazio(senha):
-            messages.error(request, 'Os campos email e senha não podem ficar em branco')
+            messages.error(
+                request, 'Os campos email e senha não podem ficar em branco')
             return redirect('login')
         if User.objects.filter(email=email).exists():
             nome = User.objects.filter(email=email).values_list(
@@ -98,3 +100,9 @@ def campo_vazio(campo):
 
 def verificacao_senha(senha1, senha2):
     return senha1 != senha2
+
+
+def deleta_receita(request, receita_id):
+    receita = get_object_or_404(Receita, pk=receita_id)
+    receita.delete()
+    return redirect('dashboard')
