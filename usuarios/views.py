@@ -115,3 +115,19 @@ def campo_vazio(campo):
 
 def verificacao_senha(senha1, senha2):
     return senha1 != senha2
+
+
+def atualiza_receita(request):
+    if request.method == 'POST':
+        receita_id = request.POST['receita_id']
+        receita = Receita.objects.get(pk=receita_id)
+        receita.nome_receita = request.POST['nome_receita']
+        receita.ingredientes = request.POST['ingredientes']
+        receita.modo_preparo = request.POST['modo_preparo']
+        receita.tempo_preparo = request.POST['tempo_preparo']
+        receita.rendimento = request.POST['rendimento']
+        receita.categoria = request.POST['categoria']
+        if 'foto_receita' in request.FILES:
+            receita.foto_receita = request.FILES['foto_receita']
+        receita.save()
+        return redirect('dashboard')
