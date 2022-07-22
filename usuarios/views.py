@@ -94,15 +94,24 @@ def cria_receita(request):
         return render(request, 'usuarios/cria_receita.html')
 
 
+def deleta_receita(request, receita_id):
+    receita = get_object_or_404(Receita, pk=receita_id)
+    receita.delete()
+    return redirect('dashboard')
+
+
+def edita_receita(request, receita_id):
+    receita = get_object_or_404(Receita, pk=receita_id)
+    receita_a_editar = {
+        'receita': receita
+    }
+
+    return render(request, 'usuarios/edita_receita.html')
+
+
 def campo_vazio(campo):
     return not campo.strip()
 
 
 def verificacao_senha(senha1, senha2):
     return senha1 != senha2
-
-
-def deleta_receita(request, receita_id):
-    receita = get_object_or_404(Receita, pk=receita_id)
-    receita.delete()
-    return redirect('dashboard')
