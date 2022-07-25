@@ -1,6 +1,6 @@
 from pyexpat.errors import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Receita
+from ..models import Receita
 from django.contrib.auth.models import User
 from django.contrib import messages
 
@@ -24,21 +24,6 @@ def receita(request, receita_id):
 
     return render(request, 'receitas/receita.html', receita_a_exibir)
 
-
-def buscar(request):
-    buscar_receita = Receita.objects.order_by(
-        '-data_receita').filter(publicada=True)
-
-    if 'buscar' in request.GET:
-        nome_a_buscar = request.GET['buscar']
-        if 'buscar':
-            buscar_receita = buscar_receita.filter(
-                nome_receita__icontains=nome_a_buscar)
-
-    dados = {
-        'receitas': buscar_receita
-    }
-    return render(request, 'receitas/buscar.html', dados)
 
 # Funcionalidades de criar, deletar e alterar receitas.
 
