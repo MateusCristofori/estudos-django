@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import auth, messages
 from receitas.models import Receita
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def cadastro(request):
@@ -61,16 +62,17 @@ def dashboard(request):
     if request.user.is_authenticated:
         id = request.user.id
         receitas = Receita.objects.order_by('-data_receita').filter(pessoa=id)
+        paginator = Paginator(receitas, 3)
+        page = request.GET.get('page')
+        receitas_por_pagina = paginator.get_page(page)
 
         dados = {
-            'receitas': receitas
+            'receitas': receitas_por_pagina
         }
 
         return render(request, 'usuarios/dashboard.html', dados)
     else:
         return redirect('index')
-
-
 
 
 def logout(request):
