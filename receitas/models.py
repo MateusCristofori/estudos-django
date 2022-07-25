@@ -1,4 +1,5 @@
 from distutils.command.upload import upload
+from email.policy import default
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -14,7 +15,8 @@ class Receita(models.Model):
     rendimento = models.CharField(max_length=100)
     categoria = models.CharField(max_length=100)
     data_receita = models.DateTimeField(default=datetime.now, blank=True)
-    foto_receita = models.ImageField(upload_to='fotos/%d/%m/%Y', blank=True)
+    foto_receita = models.ImageField(
+        upload_to='fotos/%d/%m/%Y', blank=True, default='')
     publicada = models.BooleanField(default=False)
 
     def __str__(self) -> str:

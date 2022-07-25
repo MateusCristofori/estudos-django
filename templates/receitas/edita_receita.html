@@ -23,8 +23,8 @@
         <p>Todos os campos são obrigatórios</p>
         <div class="contact-form-area">
           <form
-            action="{% url 'atualiza_receita' %}"
-            method="post"
+            action="{% url 'edita_receita' receita.id %}"
+            method="POST"
             enctype="multipart/form-data"
           >
             {% csrf_token %}
@@ -108,10 +108,7 @@
                   required
                 />
               </div>
-              <div class="col-12 col-lg-4">
-                <label for="file"><b>Foto utilizada</b></label>
-                <img src="{{ receita.foto_receita.url }}" alt="" />
-              </div>
+
               <div class="col-12 col-lg-4">
                 <label for="file"><b>Adicionar nova foto</b></label>
                 <input type="file" class="form-control" name="foto_receita" />
